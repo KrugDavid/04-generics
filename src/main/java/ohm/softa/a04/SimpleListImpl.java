@@ -22,14 +22,14 @@ public class SimpleListImpl<T> implements SimpleList<T> {
 	public void add(T item){
 		/* special case empty list */
 		if(head == null){
-			head = new ListElement(item);
+			head = new ListElement<>(item);
 		}else {
 			/* any other list length */
 			ListElement<T> current = head;
 			while (current.getNext() != null){
 				current = current.getNext();
 			}
-			current.setNext(new ListElement(item));
+			current.setNext(new ListElement<>(item));
 		}
 		size++;
 	}
@@ -41,20 +41,7 @@ public class SimpleListImpl<T> implements SimpleList<T> {
 		return size;
 	}
 
-	/**
-	 * Get a new SimpleList instance with all items of this list which match the given filter
-	 * @param filter SimpleFilter instance
-	 * @return new SimpleList instance
-	 */
-	public SimpleList filter(SimpleFilter filter){
-		SimpleList result = new SimpleListImpl();
-		for(Object o : this){
-			if(filter.include(o)){
-				result.add(o);
-			}
-		}
-		return result;
-	}
+
 
 	/**
 	 * @inheritDoc
@@ -68,9 +55,9 @@ public class SimpleListImpl<T> implements SimpleList<T> {
 	 * Helper class which implements the Iterator<T> interface
 	 * Has to be non static because otherwise it could not access the head of the list
 	 */
-	private class SimpleIterator<T> implements Iterator<T> {
+	private class SimpleIterator implements Iterator<T> {
 
-		private ListElement<T> current = (ListElement<T>) head;
+		private ListElement<T> current =head;
 
 		/**
 		 * @inheritDoc

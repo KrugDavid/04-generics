@@ -8,6 +8,9 @@ import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Iterator;
+import java.util.function.Function;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -22,7 +25,7 @@ public class SimpleListTests {
 
 	@BeforeEach
 	void setup(){
-		testList = new SimpleListImpl();
+		testList = new SimpleListImpl<>();
 
 		testList.add(1);
 		testList.add(2);
@@ -50,12 +53,9 @@ public class SimpleListTests {
 	@Test
 	void testFilterAnonymousClass(){
 		logger.info("Testing the filter possibilities by filtering for all elements greater 2");
-		SimpleList<Integer> result = testList.filter(new SimpleFilter<Integer>() {
-			@Override
-			public boolean include(Integer item) {
-				int current = item;
-				return current > 2;
-			}
+		SimpleList<Integer> result = testList.filter(item -> {
+			int current = item;
+			return current > 2;
 		});
 
 		for(Integer o : result){
@@ -67,10 +67,23 @@ public class SimpleListTests {
 	@Test
 	void testFilterLambda(){
 		logger.info("Testing the filter possibilities by filtering for all elements which are dividable by 2");
-		SimpleList<Integer> result = testList.filter(o -> ((int) o) % 2 == 0);
+		SimpleList<Integer> result = testList.filter(o -> ( o) % 2 == 0);
 		for(Integer o : result){
 			int i = o;
 			assertTrue(i % 2 == 0);
+		}
+	}
+
+	@Test
+	void testMap(){
+		logger.info("Test map");
+		SimpleList<Double> result = testList.map(i->Math.pow(i,2));
+		Iterator<Double> mapIt = result.iterator();
+		Iterator<Integer> orgIt = testList.iterator();
+
+		while (orgIt.hasNext() && mapIt.hasNext())
+		{
+			assertEquals(Math.pow(orgIt.next(),2),mapIt.next(),0.1);
 		}
 	}
 }
