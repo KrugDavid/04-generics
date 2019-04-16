@@ -19,13 +19,13 @@ public class SimpleListImpl<T> implements SimpleList<T> {
 	 * Add an object to the end of the list
 	 * @param item item to add
 	 */
-	public void add(Object item){
+	public void add(T item){
 		/* special case empty list */
 		if(head == null){
 			head = new ListElement(item);
 		}else {
 			/* any other list length */
-			ListElement current = head;
+			ListElement<T> current = head;
 			while (current.getNext() != null){
 				current = current.getNext();
 			}
